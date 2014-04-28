@@ -7,6 +7,9 @@
         <fileset dir="/home/likewise-open/SUTRIXMEDIA1/danh.ho/Tools/axis2-1.6.2/lib">
             <include name="*.jar"/>
         </fileset>
+    	<fileset dir="${basedir}/libs">
+            <include name="*.jar"/>
+        </fileset>
     </path>
 
     <target name="compile.service">
@@ -26,7 +29,7 @@
         <taskdef name="java2wsdl"
                  classname="org.apache.ws.java2wsdl.Java2WSDLTask"
                  classpathref="axis2.classpath"/>
-        <java2wsdl className="demo.HelloWorldService"
+        <java2wsdl className="com.dwsj.ws.DWSJServive"
                    outputLocation="${build.dir}"
                    targetNamespace="http://demo.samples/"
                    schemaTargetNamespace="http://demo.samples/xsd">
@@ -44,7 +47,7 @@
                 <include name="**/*.xml"/>
             </fileset>
         </copy>
-        <jar destfile="${build.dir}/HelloWorldService.aar">
+        <jar destfile="${build.dir}/dwsj.aar">
             <fileset excludes="**/Test.class" dir="${build.dir}/classes"/>
         </jar>
     </target>
