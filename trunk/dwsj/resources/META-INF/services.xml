@@ -1,20 +1,21 @@
-
-<service name="guide" scope="application" targetNamespace="http://demo/">
-    <description>DWSJ Guide Service</description>
-    <messageReceivers>
-        <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out"
-                         class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
-    </messageReceivers>
-    <schema schemaNamespace="http://demo/xsd"/>
-    <parameter name="ServiceClass">com.dwsj.ws.GuideServive</parameter>
-</service>
-
-<service name="traveller" scope="application" targetNamespace="http://demo/">
-    <description>DWSJ Traveller Service</description>
-    <messageReceivers>
-        <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out"
-                         class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
-    </messageReceivers>
-    <schema schemaNamespace="http://demo/xsd"/>
-    <parameter name="ServiceClass">com.dwsj.ws.TravellerService</parameter>
-</service>
+<serviceGroup>
+	<service name="guide" scope="application" targetNamespace="http://demo/">
+	    <description>DWSJ Guide Service</description>
+	    <messageReceivers>
+	        <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out"
+	                         class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+	    </messageReceivers>
+	    <schema schemaNamespace="http://demo/xsd"/>
+	    <parameter name="ServiceClass">com.dwsj.ws.GuideServive</parameter>
+	</service>
+	
+	<service name="traveller" scope="application" targetNamespace="http://demo/">
+	    <description>DWSJ Traveller Service</description>
+	    <messageReceivers>
+	        <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out"
+	                         class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+	    </messageReceivers>
+	    <schema schemaNamespace="http://demo/xsd"/>
+	    <parameter name="ServiceClass">com.dwsj.ws.TravellerService</parameter>
+	</service>
+</serviceGroup>
