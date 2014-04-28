@@ -3,9 +3,12 @@ package com.dwsj.main;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 
-import com.dwsj.ws.DWSJServive;
+import com.dwsj.utils.ConfigurationService;
+import com.dwsj.ws.GuideServive;
 
 public class Test {
+	private static ConfigurationService service = ConfigurationService.getInstance();
+	
 	public static byte[] read(String path) {
 		byte[] re = null;
 		try {
@@ -24,7 +27,9 @@ public class Test {
 	}
 
 	public static void main(String[] args) {
-		DWSJServive servive = new DWSJServive();
-		System.out.println(servive.uploadImage(Test.read("./images/aaa.png"), "png"));
+		GuideServive servive = new GuideServive();
+//		System.out.println(servive.login("dwsj", "dwsj"));
+//		System.out.println(servive.register("dwsj1", "dwsj1", "dwsj1"));
+		System.out.println(servive.addPlace(1, "TPHCM", "Hello HCM CITY"));
 	}
 }

@@ -1,6 +1,6 @@
 package com.dwsj.utils;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 public class Utils {
 
@@ -14,5 +14,10 @@ public class Utils {
 			}
 		}
 		return false;
+	}
+	
+	public static java.sql.Timestamp createTimestamp() {
+		java.util.Calendar calendar = java.util.Calendar.getInstance();
+		return new java.sql.Timestamp((calendar.getTime()).getTime());
 	}
 }
