@@ -1,6 +1,6 @@
 
-<service name="HelloWorldService" scope="application" targetNamespace="http://demo/">
-    <description>Hello World Service</description>
+<service name="dwsj" scope="application" targetNamespace="http://demo/">
+    <description>DWSJ Service</description>
     <messageReceivers>
         <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out"
                          class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
