@@ -2,5 +2,11 @@ package com.dwsj.utils;
 
 public class Constant {
 	public static final String[] TYPES = new String[] { "png", "jpg", "jpge", 	"gif" };
-	public static final String IMAGES = "/images";
+	public static final int SUCCESS = 1;
+	public static final int FAIL = 0;
+	public static final int USER_EXISTED = 2;
+	public static final int PARAMETER_FAIL = 3;
+	public static final int USER_NOT_FOUND = 4;
+	public static final int EXCEPTION = -1;
+	
 }
