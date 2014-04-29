@@ -10,5 +10,7 @@ public class Constant {
 	public static final int USER_NOT_FOUND = -4;
 	public static final int TYPE_FAIL = -5;
 	public static final int PLACE_NOT_FOUND = -6;
+	public static final int IMAGE_NOT_FOUND = -7;
+	public static final int INFOR_NOT_FOUND = -8;
 	
 }

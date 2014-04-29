@@ -2,10 +2,6 @@ package com.dwsj.ws;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.axis2.context.MessageContext;
-import org.apache.axis2.transport.http.HTTPConstants;
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONException;
 import org.json.JSONStringer;
@@ -125,7 +121,7 @@ public class GuideServive {
 	}
 	
 	/*
-	 * Result is id of this image and information
+	 * Result is id of this image
 	 * >0 	: request success 
 	 * 0 	: request fail 
 	 * -3	: parameter is not good
@@ -205,6 +201,85 @@ public class GuideServive {
 		return Constant.FAIL;
 	}
 	
+	/*
+	 * Result is id of this information
+	 * >0 	: request success 
+	 * 0 	: request fail 
+	 * -3	: parameter is not good
+	 * -4	: user does not exist
+	 * -6	: place does not exist
+	 * -1	: exception
+	 */
+	public int addInformation(int userId, int placeId, String information) {
+		try {
+			if (userId <= 0 || placeId <= 0 || StringUtils.isBlank(information)) {
+				return Constant.PARAMETER_FAIL;
+			}
+			
+			User user = DBService.loginById(userId);
+			if (user == null)
+				return Constant.USER_NOT_FOUND;
+			Place place = DBService.getPlaceById(placeId);
+			if (place == null)
+				return Constant.PLACE_NOT_FOUND;
+			int insert = DBService.insertInformation(placeId, userId, information);
+			if (insert > 0)
+				return insert;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Constant.EXCEPTION;
+		}
+		return Constant.FAIL;
+	}
+	
+	/*
+	 * 1 	: request success 
+	 * 0 	: request fail 
+	 * -3	: parameter is not good
+	 * -1	: exception
+	 */
+	public int deleteInformation(int infoId) {
+		try {
+			if (infoId <= 0)
+				return Constant.PARAMETER_FAIL;
+			boolean delete = DBService.deleteInformation(infoId);
+			if (delete)
+				return Constant.SUCCESS;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Constant.EXCEPTION;
+		}
+		return Constant.FAIL;
+	}
+	
+	/*
+	 * 1 	: request success 
+	 * 0 	: request fail 
+	 * -3	: parameter is not good
+	 * -1	: exception
+	 */
+	public int updateInformation(int infoId, String information) {
+		try {
+			if (infoId <= 0 || StringUtils.isBlank(information))
+				return Constant.PARAMETER_FAIL;
+			boolean update = DBService.updateInformation(infoId, information);
+			if (update)
+				return Constant.SUCCESS;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Constant.EXCEPTION;
+		}
+		return Constant.FAIL;
+	}
+	
+	/*
+	 * 1 	: request success 
+	 * 0 	: request fail 
+	 * -3	: parameter is not good
+	 * -1	: exception
+	 * -6	: place not found
+	 */
+	
 	public String listImagesByPlace(int placeId) {
 		JSONStringer result = new JSONStringer();
 		try {
@@ -213,6 +288,7 @@ public class GuideServive {
 				result.object();
 				result.key("status").value(Constant.PARAMETER_FAIL);
 				result.endObject();
+				result.endArray();
 				return result.toString();
 			}
 			Place place = DBService.getPlaceById(placeId);
@@ -220,6 +296,7 @@ public class GuideServive {
 				result.object();
 				result.key("status").value(Constant.PLACE_NOT_FOUND);
 				result.endObject();
+				result.endArray();
 				return result.toString();
 			}
 			List<Image> images = DBService.listImageByPlace(placeId);
@@ -230,8 +307,8 @@ public class GuideServive {
 			for (Image image : images) {
 				result.object();
 				result.key("id").value(image.getId());
-				result.key("data").value(Utils.getImageUrl(Utils.getHttpRequest()) + image.getImageUrl());
-				result.key("type").value(Utils.getTypeOfImage(image.getImageUrl()));
+				result.key("image").value(Utils.getImageUrl(Utils.getHttpRequest()) + image.getName());
+				result.key("type").value(Utils.getTypeOfImage(image.getName()));
 				result.key("information").value(image.getInformation());
 				result.endObject();
 			}
@@ -249,7 +326,6 @@ public class GuideServive {
 				e1.printStackTrace();
 			}
 		}
-		
 		return result.toString();
 	}
 }
