@@ -14,7 +14,7 @@ import org.apache.axis2.transport.http.HTTPConstants;
 import org.apache.commons.lang.StringUtils;
 
 public class Utils {
-	private static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.HH.mm");
+	private static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss");
 	private static ConfigurationService config = ConfigurationService.getInstance();
 
 	public static boolean checkTypes(String type) {
@@ -38,7 +38,11 @@ public class Utils {
 		String re = "";
 		try {
 			String fileName = sdf.format(new Date()) + "." + type;
-			String path = request.getServletContext().getRealPath("/")  + request.getContextPath() + "/" + config.getString("image.folder") + "/" + fileName;
+			File folder = new File(request.getServletContext().getRealPath("/")  + "/" + config.getString("image.folder"));
+			if(!folder.exists()){
+				folder.mkdir();
+			}
+			String path = request.getServletContext().getRealPath("/")  + "/" + config.getString("image.folder") + "/" + fileName;
 			File file = new File(path);
 			FileOutputStream outputStream = new FileOutputStream(file);
 			outputStream.write(data);

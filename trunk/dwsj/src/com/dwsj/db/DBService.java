@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dwsj.model.Image;
+import com.dwsj.model.Information;
 import com.dwsj.model.Place;
 import com.dwsj.model.User;
+import com.dwsj.utils.Constant;
 import com.dwsj.utils.Utils;
 
 public class DBService {
@@ -200,7 +202,7 @@ public class DBService {
 		ConnectMysql mysql = ConnectMysql.getInstance();
 		try {
 			connection = mysql.getConnection();
-			sta = connection.prepareStatement("INSERT INTO DWSJ_IMAGES (dwsj_place,dwsj_user,image_url,image_information,create_date) VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+			sta = connection.prepareStatement("INSERT INTO DWSJ_IMAGES (dwsj_place,dwsj_user,name,image_information,create_date) VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 			sta.setInt(1, placeId);
 			sta.setInt(2, userId);
 			sta.setString(3, imageUrl);
@@ -222,6 +224,38 @@ public class DBService {
 				}
 		}
 		return 0;
+	}
+	
+	public static Image findImageById(int id) {
+		Image image = null;
+		Connection connection = null;
+		PreparedStatement sta = null;
+		ConnectMysql mysql = ConnectMysql.getInstance();
+		try {
+			connection = mysql.getConnection();
+			sta = connection.prepareStatement("SELECT * FROM DWSJ_IMAGES WHERE ID=?");
+			sta.setInt(1, id);
+			ResultSet re = sta.executeQuery();
+			if(re.next()){
+				image = new Image();
+				image.setId(re.getInt("id"));
+				image.setPlaceId(re.getInt("dwsj_place"));
+				image.setUserId(re.getInt("dwsj_user"));
+				image.setName(re.getString("name"));
+				image.setInformation(re.getString("image_information"));
+				image.setCreateDate(re.getTimestamp("create_date"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+				try {
+					if(sta != null) sta.close();
+					if(connection != null) connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+		return image;
 	}
 	
 	public static boolean deleteImageAndInfo(int imageId) {
@@ -271,6 +305,113 @@ public class DBService {
 		return false;
 	}
 	
+	public static int insertInformation(int placeId, int userId, String information) {
+		Connection connection = null;
+		PreparedStatement sta = null;
+		ConnectMysql mysql = ConnectMysql.getInstance();
+		try {
+			connection = mysql.getConnection();
+			sta = connection.prepareStatement("INSERT INTO DWSJ_INFORMATION (dwsj_place,dwsj_user,information,create_date) VALUES (?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+			sta.setInt(1, placeId);
+			sta.setInt(2, userId);
+			sta.setString(3, information);
+			sta.setTimestamp(4, Utils.createTimestamp());
+			sta.executeUpdate();
+			ResultSet insert = sta.getGeneratedKeys();
+			if (insert.next()){
+			    return insert.getInt(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+				try {
+					if(sta != null) sta.close();
+					if(connection != null) connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+		return 0;
+	}
+	
+	public static Information findInformationById(int id) {
+		Information information = null;
+		Connection connection = null;
+		PreparedStatement sta = null;
+		ConnectMysql mysql = ConnectMysql.getInstance();
+		try {
+			connection = mysql.getConnection();
+			sta = connection.prepareStatement("SELECT * FROM DWSJ_INFORMATION WHERE ID=?");
+			sta.setInt(1, id);
+			ResultSet re = sta.executeQuery();
+			if(re.next()){
+				information = new Information();
+				information.setId(re.getInt("id"));
+				information.setPlaceId(re.getInt("dwsj_place"));
+				information.setUserId(re.getInt("dwsj_user"));
+				information.setInformation(re.getString("information"));
+				information.setCreateDate(re.getTimestamp("create_date"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+				try {
+					if(sta != null) sta.close();
+					if(connection != null) connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+		return information;
+	}
+	
+	public static boolean updateInformation(int infoId, String information) {
+		Connection connection = null;
+		PreparedStatement sta = null;
+		ConnectMysql mysql = ConnectMysql.getInstance();
+		try {
+			connection = mysql.getConnection();
+			sta = connection.prepareStatement("UPDATE DWSJ_INFORMATION SET information=? WHERE ID=?");
+			sta.setString(1, information);
+			sta.setInt(2, infoId);
+			int upadte = sta.executeUpdate();
+			if(upadte > 0) return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+				try {
+					if(sta != null) sta.close();
+					if(connection != null) connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+		return false;
+	}
+	
+	public static boolean deleteInformation(int infoId) {
+		Connection connection = null;
+		PreparedStatement sta = null;
+		ConnectMysql mysql = ConnectMysql.getInstance();
+		try {
+			connection = mysql.getConnection();
+			sta = connection.prepareStatement("DELETE FROM DWSJ_INFORMATION WHERE ID=?");
+			sta.setInt(1, infoId);
+			int delete = sta.executeUpdate();
+			if(delete > 0) return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+				try {
+					if(sta != null) sta.close();
+					if(connection != null) connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+		return false;
+	}
+	
 	public static List<Image> listImageByPlace(int placeId) {
 		List<Image> result = new ArrayList<Image>();
 		Connection connection = null;
@@ -287,7 +428,7 @@ public class DBService {
 				image.setId(re.getInt("id"));
 				image.setPlaceId(re.getInt("dwsj_place"));
 				image.setUserId(re.getInt("dwsj_user"));
-				image.setImageUrl(re.getString("image_url"));
+				image.setName(re.getString("name"));
 				image.setInformation(re.getString("image_information"));
 				image.setCreateDate(re.getTimestamp("create_date"));
 				result.add(image);
@@ -303,6 +444,167 @@ public class DBService {
 				}
 		}
 		return result;
+	}
+	
+	public static List<Place> searchPlace(String place) {
+		List<Place> result = new ArrayList<Place>();
+		Connection connection = null;
+		PreparedStatement sta = null;
+		ConnectMysql mysql = ConnectMysql.getInstance();
+		try {
+			connection = mysql.getConnection();
+			sta = connection.prepareStatement("SELECT * FROM DWSJ_PLACES WHERE place_name LIKE ?");
+			sta.setString(1,"%"+ place + "%");
+			ResultSet re = sta.executeQuery();
+			Place plac = null;
+			while (re.next()) {
+				plac = new Place();
+				plac.setId(re.getInt("id"));
+				plac.setUserId(re.getInt("dwsj_user"));
+				plac.setName(re.getString("place_name"));
+				plac.setDescription(re.getString("place_description"));
+				plac.setCreateDate(re.getTimestamp("create_date"));
+				result.add(plac);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+				try {
+					if(sta != null) sta.close();
+					if(connection != null) connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+		return result;
+	}
+	
+	public static int rateOnImage(int userId, int imageId, int rate) {
+		Connection connection = null;
+		PreparedStatement sta = null;
+		ConnectMysql mysql = ConnectMysql.getInstance();
+		try {
+			connection = mysql.getConnection();
+			sta = connection.prepareStatement("INSERT INTO DWSJ_RATES (dwsj_user,dwsj_image,rate,create_date) VALUES (?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+			sta.setInt(1, userId);
+			sta.setInt(2, imageId);
+			sta.setInt(3, rate);
+			sta.setTimestamp(4, Utils.createTimestamp());
+			sta.executeUpdate();
+			ResultSet insert = sta.getGeneratedKeys();
+			if (insert.next()){
+			    return insert.getInt(1);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return Constant.EXCEPTION;
+		} finally {
+			try {
+				if (sta != null)
+					sta.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return Constant.FAIL;
+	}
+	
+	public static int rateOnInformation(int userId, int infoId, int rate) {
+		Connection connection = null;
+		PreparedStatement sta = null;
+		ConnectMysql mysql = ConnectMysql.getInstance();
+		try {
+			connection = mysql.getConnection();
+			sta = connection.prepareStatement("INSERT INTO DWSJ_RATES (dwsj_user,dwsj_information,rate,create_date) VALUES (?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+			sta.setInt(1, userId);
+			sta.setInt(2, infoId);
+			sta.setInt(3, rate);
+			sta.setTimestamp(4, Utils.createTimestamp());
+			sta.executeUpdate();
+			ResultSet insert = sta.getGeneratedKeys();
+			if (insert.next()){
+			    return insert.getInt(1);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return Constant.EXCEPTION;
+		} finally {
+			try {
+				if (sta != null)
+					sta.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return Constant.FAIL;
+	}
+	
+	public static int commentOnImage(int userId, int imageId, String comment) {
+		Connection connection = null;
+		PreparedStatement sta = null;
+		ConnectMysql mysql = ConnectMysql.getInstance();
+		try {
+			connection = mysql.getConnection();
+			sta = connection.prepareStatement("INSERT INTO DWSJ_COMMENTS (dwsj_user,dwsj_image,comment,create_date) VALUES (?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+			sta.setInt(1, userId);
+			sta.setInt(2, imageId);
+			sta.setString(3, comment);
+			sta.setTimestamp(4, Utils.createTimestamp());
+			sta.executeUpdate();
+			ResultSet insert = sta.getGeneratedKeys();
+			if (insert.next()){
+			    return insert.getInt(1);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return Constant.EXCEPTION;
+		} finally {
+			try {
+				if (sta != null)
+					sta.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return Constant.FAIL;
+	}
+	
+	public static int commentOnInformation(int userId, int infoId, String comment) {
+		Connection connection = null;
+		PreparedStatement sta = null;
+		ConnectMysql mysql = ConnectMysql.getInstance();
+		try {
+			connection = mysql.getConnection();
+			sta = connection.prepareStatement("INSERT INTO DWSJ_COMMENTS (dwsj_user,dwsj_information,comment,create_date) VALUES (?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+			sta.setInt(1, userId);
+			sta.setInt(2, infoId);
+			sta.setString(3, comment);
+			sta.setTimestamp(4, Utils.createTimestamp());
+			sta.executeUpdate();
+			ResultSet insert = sta.getGeneratedKeys();
+			if (insert.next()){
+			    return insert.getInt(1);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return Constant.EXCEPTION;
+		} finally {
+			try {
+				if (sta != null)
+					sta.close();
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return Constant.FAIL;
 	}
 }
 
