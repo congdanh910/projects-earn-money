@@ -1,7 +1,8 @@
 package com.dwsj.ws;
 
 public class TravellerService {
-	public String hello(String place){
-		return "Hello : " + place;
-	}
+	
+	 public String getHello(String username) {
+	    	return "Hello World Mr " + username; 
+	    }
 }

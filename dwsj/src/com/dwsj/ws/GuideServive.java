@@ -1,29 +1,30 @@
 package com.dwsj.ws;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.axis2.context.MessageContext;
+import org.apache.axis2.transport.http.HTTPConstants;
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONException;
 import org.json.JSONStringer;
 
 import com.dwsj.db.DBService;
+import com.dwsj.model.Image;
+import com.dwsj.model.Place;
 import com.dwsj.model.User;
-import com.dwsj.utils.ConfigurationService;
 import com.dwsj.utils.Constant;
 import com.dwsj.utils.Utils;
 
 public class GuideServive {
-	private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.HH.mm");
-	private ConfigurationService config = ConfigurationService.getInstance();
 	
 	/*
+	 * This function will response for client User-Information
 	 * 1 	: request success 
 	 * 0 	: request fail 
-	 * 3	: parameter is not good
-	 * -1 	: type not accept
+	 * -3	: parameter is not good
+	 * -1 	: exception
 	 */
 	public String login(String username, String password) {
 		JSONStringer result = new JSONStringer();
@@ -74,9 +75,9 @@ public class GuideServive {
 	/*
 	 * 1 	: request success 
 	 * 0 	: request fail 
-	 * 2 	: user existed
-	 * 3	: parameter is not good
-	 * -1 	: type not accept
+	 * -2 	: user existed
+	 * -3	: parameter is not good
+	 * -1 	: exception
 	 */
 	public int register(String username, String password, String fullName) {
 		if(StringUtils.isBlank(username) || StringUtils.isBlank(password) || StringUtils.isBlank(fullName)){
@@ -100,9 +101,9 @@ public class GuideServive {
 	/*
 	 * 1 	: request success 
 	 * 0 	: request fail 
-	 * 3	: parameter is not good
-	 * 4	: user does not exist
-	 * -1 	: type not accept
+	 * -3	: parameter is not good
+	 * -4	: user does not exist
+	 * -1 	: exception
 	 */
 	public int addPlace(int userId, String place, String description) {
 		try {
@@ -124,24 +125,131 @@ public class GuideServive {
 	}
 	
 	/*
+	 * Result is id of this image and information
+	 * >0 	: request success 
+	 * 0 	: request fail 
+	 * -3	: parameter is not good
+	 * -4	: user does not exist
+	 * -6	: place does not exist
+	 * -5 	: type not accept
+	 * -1	: exception
+	 */
+	public int addImageAndInfo(int userId, int placeId, byte[] image,
+			String type, String information) {
+		try {
+			if (userId <= 0 || placeId <= 0 || image == null
+					|| StringUtils.isBlank(type)
+					|| StringUtils.isBlank(information)) {
+				return Constant.PARAMETER_FAIL;
+			}
+			if (!Utils.checkTypes(type)) {
+				return Constant.TYPE_FAIL;
+			}
+			User user = DBService.loginById(userId);
+			if (user == null)
+				return Constant.USER_NOT_FOUND;
+			Place place = DBService.getPlaceById(placeId);
+			if (place == null)
+				return Constant.PLACE_NOT_FOUND;
+			String upload = Utils.uploadImage(image, type, Utils.getHttpRequest());
+			if (StringUtils.isBlank(upload)) {
+				return Constant.FAIL;
+			}
+			int insert = DBService.insertImage(placeId, userId, upload, information);
+			if (insert > 0)
+				return insert;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Constant.EXCEPTION;
+		}
+		return Constant.FAIL;
+	}
+	
+	/*
 	 * 1 	: request success 
 	 * 0 	: request fail 
-	 * -1 	: type not accept
+	 * -3	: parameter is not good
+	 * -1	: exception
 	 */
-	public int uploadImage(byte[] data, String type) {
+	public int deleteImageAndInfo(int imageId) {
 		try {
-			if (!Utils.checkTypes(type) && data.length > 0) {
-				return -1;
-			}
-			File file = new File(config.getString("url.images") + "/" + sdf.format(new Date()) + "." + type);
-			FileOutputStream outputStream = new FileOutputStream(file);
-			outputStream.write(data);
-			outputStream.flush();
-			outputStream.close();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			return 0;
+			if (imageId <= 0)
+				return Constant.PARAMETER_FAIL;
+			boolean delete = DBService.deleteImageAndInfo(imageId);
+			if (delete)
+				return Constant.SUCCESS;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Constant.EXCEPTION;
 		}
-		return 1;
+		return Constant.FAIL;
+	}
+	
+	/*
+	 * 1 	: request success 
+	 * 0 	: request fail 
+	 * -3	: parameter is not good
+	 * -1	: exception
+	 */
+	public int updateImageAndInfo(int imageId, String information) {
+		try {
+			if (imageId <= 0 || StringUtils.isBlank(information))
+				return Constant.PARAMETER_FAIL;
+			boolean update = DBService.updateImageAndInfo(imageId, information);
+			if (update)
+				return Constant.SUCCESS;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Constant.EXCEPTION;
+		}
+		return Constant.FAIL;
+	}
+	
+	public String listImagesByPlace(int placeId) {
+		JSONStringer result = new JSONStringer();
+		try {
+			result.array();
+			if (placeId <= 0) {
+				result.object();
+				result.key("status").value(Constant.PARAMETER_FAIL);
+				result.endObject();
+				return result.toString();
+			}
+			Place place = DBService.getPlaceById(placeId);
+			if (place == null) {
+				result.object();
+				result.key("status").value(Constant.PLACE_NOT_FOUND);
+				result.endObject();
+				return result.toString();
+			}
+			List<Image> images = DBService.listImageByPlace(placeId);
+			result.object();
+			result.key("status").value(Constant.SUCCESS);
+			result.endObject();
+			
+			for (Image image : images) {
+				result.object();
+				result.key("id").value(image.getId());
+				result.key("data").value(Utils.getImageUrl(Utils.getHttpRequest()) + image.getImageUrl());
+				result.key("type").value(Utils.getTypeOfImage(image.getImageUrl()));
+				result.key("information").value(image.getInformation());
+				result.endObject();
+			}
+			result.endArray();
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				result.array();
+				result.object();
+				result.key("status").value(Constant.EXCEPTION);
+				result.endObject();
+				result.endArray();
+				return result.toString();
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		return result.toString();
 	}
 }
