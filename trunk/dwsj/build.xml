@@ -1,6 +1,6 @@
 
 <project name="AxisHelloService" basedir="." default="generate.service">
-	<property name="AXIS2_HOME" value="/home/congdanh/Tools/axis2-1.6.2"/>
+	<property name="AXIS2_HOME" value="/home/likewise-open/SUTRIXMEDIA1/danh.ho/Tools/axis2-1.6.2"/>
     <property name="build.dir" value="build"/>
 
     <path id="axis2.classpath">
@@ -29,7 +29,7 @@
         <taskdef name="java2wsdl"
                  classname="org.apache.ws.java2wsdl.Java2WSDLTask"
                  classpathref="axis2.classpath"/>
-        <java2wsdl className="com.dwsj.ws.DWSJServive"
+        <java2wsdl className="com.dwsj.ws.GuideServive"
                    outputLocation="${build.dir}"
                    targetNamespace="http://demo.samples/"
                    schemaTargetNamespace="http://demo.samples/xsd">
