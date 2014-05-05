@@ -16,8 +16,7 @@ import com.dwsj.utils.Constant;
 public class TravellerService {
 
 	/*
-	 * Result is id of this rateOnImage
-	 * >0 	: request success 
+	 * 1 	: request success 
 	 * 0 	: request fail 
 	 * -3	: parameter is not good
 	 * -1	: exception
