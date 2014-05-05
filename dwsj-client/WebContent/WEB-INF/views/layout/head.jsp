@@ -7,3 +7,4 @@
 <meta name="author" content="">
 <!-- Bootstrap core CSS -->
 <link href='<c:url value = "/media/css/bootstrap.min.css"/>'	rel="stylesheet">
+<link href='<c:url value = "/media/css/navbar-static-top.css"/>' rel="stylesheet">
