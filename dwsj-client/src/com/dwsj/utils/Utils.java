@@ -49,7 +49,6 @@ public class Utils {
 		if (StringUtils.isBlank(imageurl) && !imageurl.contains(".")) {
 			return null;
 		}
-		return imageurl.substring(imageurl.lastIndexOf(".") + 1,
-				imageurl.length());
+		return imageurl.substring(imageurl.lastIndexOf(".") + 1, imageurl.length());
 	}
 }
