@@ -1,28 +1,24 @@
 package com.dwsj.model;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 public class Image implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private int placeId;
 	private int userId;
-	private String name;
+	private String url;
 	private String information;
-	private Timestamp createDate;
 
 	public Image() {
 	}
 
-	public Image(int id, int placeId, int userId, String name,
-			String information, Timestamp createDate) {
+	public Image(int id, int placeId, int userId, String url, String information) {
 		this.id = id;
 		this.placeId = placeId;
 		this.userId = userId;
-		this.name = name;
+		this.url = url;
 		this.information = information;
-		this.createDate = createDate;
 	}
 
 	public int getId() {
@@ -49,12 +45,12 @@ public class Image implements Serializable {
 		this.userId = userId;
 	}
 
-	public String getName() {
-		return name;
+	public String getUrl() {
+		return url;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 	public String getInformation() {
@@ -63,14 +59,6 @@ public class Image implements Serializable {
 
 	public void setInformation(String information) {
 		this.information = information;
-	}
-
-	public Timestamp getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(Timestamp createDate) {
-		this.createDate = createDate;
 	}
 
 }
