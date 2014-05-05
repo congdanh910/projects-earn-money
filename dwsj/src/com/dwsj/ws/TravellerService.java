@@ -7,11 +7,14 @@ import org.json.JSONException;
 import org.json.JSONStringer;
 
 import com.dwsj.db.DBService;
+import com.dwsj.model.Comment;
 import com.dwsj.model.Image;
 import com.dwsj.model.Information;
 import com.dwsj.model.Place;
+import com.dwsj.model.Rate;
 import com.dwsj.model.User;
 import com.dwsj.utils.Constant;
+import com.dwsj.utils.Utils;
 
 public class TravellerService {
 
@@ -178,5 +181,125 @@ public class TravellerService {
 			return Constant.EXCEPTION;
 		}
 		return Constant.FAIL;
+	}
+	
+	/*
+	 * 1 	: request success 
+	 * 0 	: request fail 
+	 * -3	: parameter is not good
+	 * -1	: exception
+	 * -6	: place not found
+	 */
+	
+	public String listCommentByImage(int imageId) {
+		JSONStringer result = new JSONStringer();
+		try {
+			result.array();
+			if (imageId <= 0) {
+				result.object();
+				result.key("status").value(Constant.PARAMETER_FAIL);
+				result.endObject();
+				result.endArray();
+				return result.toString();
+			}
+			Image image = DBService.findImageById(imageId);
+			if (image == null) {
+				result.object();
+				result.key("status").value(Constant.PLACE_NOT_FOUND);
+				result.endObject();
+				result.endArray();
+				return result.toString();
+			}
+			List<Comment> comments = DBService.findCommentByImage(imageId);
+			result.object();
+			result.key("status").value(Constant.SUCCESS);
+			result.endObject();
+			
+			for (Comment comment : comments) {
+				result.object();
+				User user = DBService.loginById(comment.getUserId());
+				result.key("id").value(comment.getId());
+				result.key("comment").value(comment.getComment());
+				result.key("user_id").value(comment.getUserId());
+				result.key("user_name").value(user != null ? user.getUsername():"");
+				result.key("full_name").value(user != null ? user.getFullName():"");
+				result.key("image_id").value(comment.getImageId());
+				result.endObject();
+			}
+			result.endArray();
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				result.array();
+				result.object();
+				result.key("status").value(Constant.EXCEPTION);
+				result.endObject();
+				result.endArray();
+				return result.toString();
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+			}
+		}
+		return result.toString();
+	}
+	
+	/*
+	 * 1 	: request success 
+	 * 0 	: request fail 
+	 * -3	: parameter is not good
+	 * -1	: exception
+	 * -6	: place not found
+	 */
+	
+	public String listRateByImage(int imageId) {
+		JSONStringer result = new JSONStringer();
+		try {
+			result.array();
+			if (imageId <= 0) {
+				result.object();
+				result.key("status").value(Constant.PARAMETER_FAIL);
+				result.endObject();
+				result.endArray();
+				return result.toString();
+			}
+			Image image = DBService.findImageById(imageId);
+			if (image == null) {
+				result.object();
+				result.key("status").value(Constant.PLACE_NOT_FOUND);
+				result.endObject();
+				result.endArray();
+				return result.toString();
+			}
+			List<Rate> rates = DBService.findRateByImage(imageId);
+			result.object();
+			result.key("status").value(Constant.SUCCESS);
+			result.endObject();
+			
+			for (Rate rate : rates) {
+				result.object();
+				User user = DBService.loginById(rate.getUserId());
+				result.key("id").value(rate.getId());
+				result.key("rate").value(rate.getRate());
+				result.key("user_id").value(rate.getUserId());
+				result.key("user_name").value(user != null ? user.getUsername():"");
+				result.key("full_name").value(user != null ? user.getFullName():"");
+				result.key("image_id").value(rate.getImageId());
+				result.endObject();
+			}
+			result.endArray();
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				result.array();
+				result.object();
+				result.key("status").value(Constant.EXCEPTION);
+				result.endObject();
+				result.endArray();
+				return result.toString();
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+			}
+		}
+		return result.toString();
 	}
 }

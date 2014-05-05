@@ -8,9 +8,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dwsj.model.Comment;
 import com.dwsj.model.Image;
 import com.dwsj.model.Information;
 import com.dwsj.model.Place;
+import com.dwsj.model.Rate;
 import com.dwsj.model.User;
 import com.dwsj.utils.Constant;
 import com.dwsj.utils.Utils;
@@ -106,7 +108,6 @@ public class DBService {
 					e.printStackTrace();
 				}
 		}
-
 		return false;
 	}
 	
@@ -233,7 +234,7 @@ public class DBService {
 		ConnectMysql mysql = ConnectMysql.getInstance();
 		try {
 			connection = mysql.getConnection();
-			sta = connection.prepareStatement("SELECT * FROM DWSJ_IMAGES WHERE ID=?");
+			sta = connection.prepareStatement("SELECT * FROM DWSJ_IMAGES WHERE ID=? AND STATUS=1");
 			sta.setInt(1, id);
 			ResultSet re = sta.executeQuery();
 			if(re.next()){
@@ -264,7 +265,7 @@ public class DBService {
 		ConnectMysql mysql = ConnectMysql.getInstance();
 		try {
 			connection = mysql.getConnection();
-			sta = connection.prepareStatement("DELETE FROM DWSJ_IMAGES WHERE ID=?");
+			sta = connection.prepareStatement("UPDATE DWSJ_IMAGES SET status=0 WHERE ID=?");
 			sta.setInt(1, imageId);
 			int delete = sta.executeUpdate();
 			if(delete > 0) return true;
@@ -419,7 +420,7 @@ public class DBService {
 		ConnectMysql mysql = ConnectMysql.getInstance();
 		try {
 			connection = mysql.getConnection();
-			sta = connection.prepareStatement("SELECT * FROM DWSJ_IMAGES WHERE DWSJ_PLACE=?");
+			sta = connection.prepareStatement("SELECT * FROM DWSJ_IMAGES WHERE DWSJ_PLACE=? AND STATUS=1");
 			sta.setInt(1, placeId);
 			ResultSet re = sta.executeQuery();
 			Image image = null;
@@ -670,5 +671,120 @@ public class DBService {
 		}
 		return Constant.FAIL;
 	}
+	
+	public static List<Comment> findCommentByImage(int imageId) {
+		List<Comment> result = new ArrayList<Comment>();
+		Connection connection = null;
+		PreparedStatement sta = null;
+		ConnectMysql mysql = ConnectMysql.getInstance();
+		try {
+			connection = mysql.getConnection();
+			sta = connection.prepareStatement("SELECT * FROM DWSJ_COMMENTS WHERE dwsj_image = ?");
+			sta.setInt(1, imageId);
+			ResultSet re = sta.executeQuery();
+			Comment comment = null;
+			while (re.next()) {
+				comment = new Comment();
+				comment.setUserId(re.getInt("dwsj_user"));
+				comment.setImageId(re.getInt("dwsj_image"));
+				comment.setComment(re.getString("comment"));
+				comment.setCreateDate(re.getTimestamp("create_date"));
+				result.add(comment);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+				try {
+					if(sta != null) sta.close();
+					if(connection != null) connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+		return result;
+	}
+	
+	public static List<Rate> findRateByImage(int imageId) {
+		List<Rate> result = new ArrayList<Rate>();
+		Connection connection = null;
+		PreparedStatement sta = null;
+		ConnectMysql mysql = ConnectMysql.getInstance();
+		try {
+			connection = mysql.getConnection();
+			sta = connection.prepareStatement("SELECT * FROM DWSJ_RATES WHERE dwsj_image = ?");
+			sta.setInt(1, imageId);
+			ResultSet re = sta.executeQuery();
+			Rate rate = null;
+			while (re.next()) {
+				rate = new Rate();
+				rate.setUserId(re.getInt("dwsj_user"));
+				rate.setImageId(re.getInt("dwsj_image"));
+				rate.setRate(re.getInt("rate"));
+				rate.setCreateDate(re.getTimestamp("create_date"));
+				result.add(rate);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+				try {
+					if(sta != null) sta.close();
+					if(connection != null) connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+		return result;
+	}
+	
+	public static int countCommentByImage(int imageId) {
+		Connection connection = null;
+		PreparedStatement sta = null;
+		ConnectMysql mysql = ConnectMysql.getInstance();
+		try {
+			connection = mysql.getConnection();
+			sta = connection.prepareStatement("SELECT COUNT(*) AS COUNT_COMMENT FROM DWSJ_COMMENTS WHERE dwsj_image=?");
+			sta.setInt(1, imageId);
+			ResultSet re = sta.executeQuery();
+			while (re.next()) {
+				return re.getInt("COUNT_COMMENT");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+				try {
+					if(sta != null) sta.close();
+					if(connection != null) connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+		return 0;
+	}
+	
+	public static int countRateByImage(int imageId) {
+		Connection connection = null;
+		PreparedStatement sta = null;
+		ConnectMysql mysql = ConnectMysql.getInstance();
+		try {
+			connection = mysql.getConnection();
+			sta = connection.prepareStatement("SELECT COUNT(*) AS COUNT_RATE FROM DWSJ_RATES WHERE dwsj_image=?");
+			sta.setInt(1, imageId);
+			ResultSet re = sta.executeQuery();
+			while (re.next()) {
+				return re.getInt("COUNT_RATE");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+				try {
+					if(sta != null) sta.close();
+					if(connection != null) connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+		return 0;
+	}
+	
 }
 

@@ -405,8 +405,11 @@ public class GuideServive {
 			for (Image image : images) {
 				result.object();
 				result.key("id").value(image.getId());
+				result.key("user_id").value(image.getUserId());
 				result.key("image").value(Utils.getImageUrl(Utils.getHttpRequest()) + image.getName());
 				result.key("type").value(Utils.getTypeOfImage(image.getName()));
+				result.key("count_comment").value(DBService.countCommentByImage(image.getId()));
+				result.key("count_rate").value(DBService.countRateByImage(image.getId()));
 				result.key("information").value(image.getInformation());
 				result.endObject();
 			}
