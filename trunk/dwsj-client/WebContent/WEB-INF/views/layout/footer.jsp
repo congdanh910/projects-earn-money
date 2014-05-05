@@ -5,3 +5,4 @@
 <script src='<c:url value = "/media/js/jquery.min.js"/>' ></script>
 <script src='<c:url value = "/media/js/bootstrap.min.js"/>' ></script>
 <script src='<c:url value = "/media/js/bootstrap-notify.js"/>' ></script>
+<script src='<c:url value = "/media/js/jquery.barrating.min.js"/>' ></script>

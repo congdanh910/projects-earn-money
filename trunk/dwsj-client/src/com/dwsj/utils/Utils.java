@@ -3,7 +3,13 @@ package com.dwsj.utils;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
+
+import com.dwsj.model.Rate;
 
 public class Utils {
 	private static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss");
@@ -50,5 +56,24 @@ public class Utils {
 			return null;
 		}
 		return imageurl.substring(imageurl.lastIndexOf(".") + 1, imageurl.length());
+	}
+
+	public static Map<String, Integer> collectRates(List<Rate> rates){
+		Map<String, Integer> maps = new HashMap<String, Integer>();
+		maps.put("1", 0);
+		maps.put("2", 0);
+		maps.put("3", 0);
+		maps.put("4", 0);
+		maps.put("5", 0);		
+		if(rates != null && rates.size() > 0){
+			for (Rate rate : rates) {
+				if(maps.containsKey(rate.getRate() + "")){
+					maps.put(rate.getRate() + "", maps.get(rate.getRate() + "") + 1);
+				} else {
+					maps.put(rate.getRate() + "", 1);
+				}
+			}
+		}
+		return maps;
 	}
 }

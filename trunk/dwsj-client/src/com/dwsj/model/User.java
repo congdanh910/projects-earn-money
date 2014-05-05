@@ -10,18 +10,15 @@ public class User implements Serializable {
 	private String username;
 	private String password;
 	private String fullName;
-	private Timestamp createDate;
 
 	public User() {
 	}
 
-	public User(int id, String username, String password, String fullName,
-			Timestamp createDate) {
+	public User(int id, String username, String password, String fullName) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.fullName = fullName;
-		this.createDate = createDate;
 	}
 
 	public int getId() {
@@ -54,14 +51,6 @@ public class User implements Serializable {
 
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
-	}
-
-	public Timestamp getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(Timestamp createDate) {
-		this.createDate = createDate;
 	}
 
 }
