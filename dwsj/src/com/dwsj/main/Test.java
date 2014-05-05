@@ -49,7 +49,7 @@ public class Test {
 //		System.out.println(travellerService.rateOnImage(1, 134, 4));
 //		System.out.println(travellerService.rateOnInformation(77, 26, 4));
 //		System.out.println(travellerService.commentOnImage(1, 13, "commentOnImage"));
-		System.out.println(travellerService.commentOnInformation(1, 26, "commentOnInformation"));
+//		System.out.println(travellerService.commentOnInformation(1, 26, "commentOnInformation"));
 		
 //		System.out.println(DBService.rateOnImage(1, 13, 2));
 //		System.out.println(DBService.rateOnInformation(1, 26, 4));
@@ -57,6 +57,7 @@ public class Test {
 //		System.out.println(DBService.commentOnInformation(1, 26, "commentOnInformation"));
 //		System.out.println(DBService.findInformationById(26));
 //		System.out.println(DBService.findImageById(13));
-		
+//		System.out.println(DBService.findPlaceById(0));
+//		System.out.println(DBService.findPlaceByUser(2).size());
 	}
 }

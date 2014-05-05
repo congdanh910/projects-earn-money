@@ -121,6 +121,104 @@ public class GuideServive {
 	}
 	
 	/*
+	 * 1 	: request success 
+	 * 0 	: request fail 
+	 * -3	: parameter is not good
+	 * -4	: user does not exist
+	 * -1 	: exception
+	 */
+	public String placeInfo(int placeId) {
+		JSONStringer result = new JSONStringer();
+		try {
+			if (placeId <= 0) {
+				result.array();
+				result.object();
+				result.key("status").value(Constant.PARAMETER_FAIL);
+				result.endObject();
+				result.endArray();
+				return result.toString();
+			}
+			Place place = DBService.findPlaceById(placeId);
+			if (place == null) {
+				result.array();
+				result.object();
+				result.key("status").value(Constant.PLACE_NOT_FOUND);
+				result.endObject();
+				result.endArray();
+				return result.toString();
+			}
+			result.array();
+			result.object();
+			result.key("status").value(Constant.SUCCESS);
+			result.endObject();
+			result.object();
+			result.key("id").value(place.getId());
+			result.key("name").value(place.getName());
+			result.key("description").value(place.getDescription());
+			result.endObject();
+			result.endArray();
+			return result.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				result.array();
+				result.object();
+				result.key("status").value(Constant.EXCEPTION);
+				result.endObject();
+				result.endArray();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			return result.toString();
+		}
+	}
+	
+	/*
+	 * 1 	: request success 
+	 * 0 	: request fail 
+	 * -3	: parameter is not good
+	 * -1	: exception
+	 */
+	public String searchPlaceByUser(int userId) {
+		JSONStringer result = new JSONStringer();
+		try {
+			result.array();
+			if (userId <= 0) {
+				result.object();
+				result.key("status").value(Constant.PARAMETER_FAIL);
+				result.endObject();
+				result.endArray();
+				return result.toString();
+			}
+			List<Place> places = DBService.findPlaceByUser(userId);
+			result.object();
+			result.key("status").value(Constant.SUCCESS);
+			result.endObject();
+			for (Place pl : places) {
+				result.object();
+				result.key("id").value(pl.getId());
+				result.key("name").value(pl.getName());
+				result.key("description").value(pl.getDescription());
+				result.endObject();
+			}
+			result.endArray();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			try {
+				result.array();
+				result.object();
+				result.key("status").value(Constant.EXCEPTION);
+				result.endObject();
+				result.endArray();
+				return result.toString();
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+			}
+		}
+		return result.toString();
+	}
+	
+	/*
 	 * Result is id of this image
 	 * >0 	: request success 
 	 * 0 	: request fail 

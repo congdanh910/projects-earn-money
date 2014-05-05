@@ -479,6 +479,70 @@ public class DBService {
 		return result;
 	}
 	
+	public static Place findPlaceById(int id) {
+		Place plac = null;
+		Connection connection = null;
+		PreparedStatement sta = null;
+		ConnectMysql mysql = ConnectMysql.getInstance();
+		try {
+			connection = mysql.getConnection();
+			sta = connection.prepareStatement("SELECT * FROM DWSJ_PLACES WHERE id= ?");
+			sta.setInt(1, id);;
+			ResultSet re = sta.executeQuery();
+			while (re.next()) {
+				plac = new Place();
+				plac.setId(re.getInt("id"));
+				plac.setUserId(re.getInt("dwsj_user"));
+				plac.setName(re.getString("place_name"));
+				plac.setDescription(re.getString("place_description"));
+				plac.setCreateDate(re.getTimestamp("create_date"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+				try {
+					if(sta != null) sta.close();
+					if(connection != null) connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+		return plac;
+	}
+	
+	public static List<Place> findPlaceByUser(int userId) {
+		List<Place> result = new ArrayList<Place>();
+		Connection connection = null;
+		PreparedStatement sta = null;
+		ConnectMysql mysql = ConnectMysql.getInstance();
+		try {
+			connection = mysql.getConnection();
+			sta = connection.prepareStatement("SELECT * FROM DWSJ_PLACES WHERE dwsj_user = ?");
+			sta.setInt(1, userId);
+			ResultSet re = sta.executeQuery();
+			Place plac = null;
+			while (re.next()) {
+				plac = new Place();
+				plac.setId(re.getInt("id"));
+				plac.setUserId(re.getInt("dwsj_user"));
+				plac.setName(re.getString("place_name"));
+				plac.setDescription(re.getString("place_description"));
+				plac.setCreateDate(re.getTimestamp("create_date"));
+				result.add(plac);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+				try {
+					if(sta != null) sta.close();
+					if(connection != null) connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+		return result;
+	}
+	
 	public static int rateOnImage(int userId, int imageId, int rate) {
 		Connection connection = null;
 		PreparedStatement sta = null;
