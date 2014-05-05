@@ -59,5 +59,10 @@ public class Test {
 //		System.out.println(DBService.findImageById(13));
 //		System.out.println(DBService.findPlaceById(0));
 //		System.out.println(DBService.findPlaceByUser(2).size());
+		
+//		System.out.println(DBService.findCommentByImage(13));
+//		System.out.println(DBService.findRateByImage(13));
+//		System.out.println(DBService.countCommentByImage(26));
+//		System.out.println(DBService.countRateByImage(13));
 	}
 }
