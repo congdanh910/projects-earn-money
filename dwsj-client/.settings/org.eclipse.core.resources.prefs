@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+encoding//src/com/dwsj/ws/Guide.java=UTF-8
+encoding//src/com/dwsj/ws/GuideLocator.java=UTF-8
+encoding//src/com/dwsj/ws/GuidePortType.java=UTF-8
+encoding//src/com/dwsj/ws/GuideSoap11BindingStub.java=UTF-8
+encoding//src/com/dwsj/ws/Traveller.java=UTF-8
+encoding//src/com/dwsj/ws/TravellerLocator.java=UTF-8
+encoding//src/com/dwsj/ws/TravellerPortType.java=UTF-8
+encoding//src/com/dwsj/ws/TravellerSoap11BindingStub.java=UTF-8
