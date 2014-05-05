@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
+Source Server         : local
 Source Server Version : 50537
 Source Host           : localhost:3306
 Source Database       : dwsj
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50537
 File Encoding         : 65001
 
-Date: 2014-05-02 10:25:52
+Date: 2014-05-06 01:19:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,7 +24,7 @@ CREATE TABLE `dwsj_comments` (
   `dwsj_user` int(11) NOT NULL,
   `dwsj_information` int(11) NOT NULL DEFAULT '0',
   `dwsj_image` int(11) NOT NULL DEFAULT '0',
-  `comment` varchar(255) NOT NULL,
+  `comment` varchar(1000) NOT NULL,
   `create_date` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -40,10 +40,11 @@ DROP TABLE IF EXISTS `dwsj_images`;
 CREATE TABLE `dwsj_images` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `dwsj_place` int(11) NOT NULL,
-  `dwsj_user` int(11) DEFAULT NULL,
+  `dwsj_user` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `image_information` varchar(255) DEFAULT NULL,
+  `image_information` varchar(1000) DEFAULT NULL,
   `create_date` timestamp NULL DEFAULT NULL,
+  `status` int(11) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -59,8 +60,8 @@ CREATE TABLE `dwsj_information` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `dwsj_place` int(11) NOT NULL,
   `dwsj_user` int(11) NOT NULL,
-  `information` varchar(255) NOT NULL,
-  `create_date` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `information` varchar(1000) NOT NULL,
+  `create_date` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -76,7 +77,7 @@ CREATE TABLE `dwsj_places` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `dwsj_user` int(11) NOT NULL,
   `place_name` varchar(255) NOT NULL,
-  `place_description` varchar(255) DEFAULT NULL,
+  `place_description` varchar(1000) DEFAULT NULL,
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
