@@ -14,8 +14,9 @@
       <div class="navbar-collapse collapse">
          <ul class="nav navbar-nav">
            <li class="active"><a href='<c:url value="/${urlPattern}/home"/>'>Home</a></li>
-           <li><a href="#about">My Places</a></li>
-           <li><a href="#contact">Contact</a></li>
+           <c:if test="${not empty user}">
+           		<li><a href="<c:url value="/${urlPattern}/myPlace"/>">My Places</a></li>
+           </c:if>
          </ul>
        <c:if test="${login == null or login == false}">
          	<div class="navbar-collapse collapse">
@@ -27,6 +28,7 @@
 				  <input type="password" placeholder="Password" class="form-control" name="password">
 				</div>
 				<button type="submit" class="btn btn-success">Sign in</button>
+				<button type="button" class="btn btn-success" onclick="window.location.href = '<c:url value="/${urlPattern}/register"/>';">Register</button>
 			  </form>
 			</div>
 		</c:if>

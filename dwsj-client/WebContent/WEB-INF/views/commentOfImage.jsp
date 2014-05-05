@@ -1,8 +1,10 @@
-<div class="media-body div-radius">
-	<h4 class="media-heading">Media heading</h4>
-   	Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-</div>
-<div class="media-body div-radius">
-	<h4 class="media-heading">Media heading</h4>
-   	Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-</div>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:if test="${not empty comments}">
+	<c:forEach var="comment" items="${comments}">
+		<div class="media-body div-radius">
+			<h4 class="media-heading">${comment.fullName}</h4>
+		   	${comment.comment}
+		</div>
+		<div style="clear: both; margin-top: 5px;"></div>
+	</c:forEach>
+</c:if>

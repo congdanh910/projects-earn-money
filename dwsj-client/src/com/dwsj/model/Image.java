@@ -7,16 +7,21 @@ public class Image implements Serializable {
 	private int id;
 	private int placeId;
 	private int userId;
+	private int countComment;
+	private int countRate;
 	private String url;
 	private String information;
 
 	public Image() {
 	}
 
-	public Image(int id, int placeId, int userId, String url, String information) {
+	public Image(int id, int placeId, int userId, int countComment,
+			int countRate, String url, String information) {
 		this.id = id;
 		this.placeId = placeId;
 		this.userId = userId;
+		this.countComment = countComment;
+		this.countRate = countRate;
 		this.url = url;
 		this.information = information;
 	}
@@ -43,6 +48,22 @@ public class Image implements Serializable {
 
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+
+	public int getCountComment() {
+		return countComment;
+	}
+
+	public void setCountComment(int countComment) {
+		this.countComment = countComment;
+	}
+
+	public int getCountRate() {
+		return countRate;
+	}
+
+	public void setCountRate(int countRate) {
+		this.countRate = countRate;
 	}
 
 	public String getUrl() {

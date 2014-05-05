@@ -50,10 +50,22 @@ public class TravellerPortTypeProxy implements com.dwsj.ws.TravellerPortType {
     return travellerPortType.rateOnInformation(userId, infoId, rate);
   }
   
+  public java.lang.String listCommentByImage(java.lang.Integer imageId) throws java.rmi.RemoteException{
+    if (travellerPortType == null)
+      _initTravellerPortTypeProxy();
+    return travellerPortType.listCommentByImage(imageId);
+  }
+  
   public java.lang.Integer commentOnImage(java.lang.Integer userId, java.lang.Integer imageId, java.lang.String comment) throws java.rmi.RemoteException{
     if (travellerPortType == null)
       _initTravellerPortTypeProxy();
     return travellerPortType.commentOnImage(userId, imageId, comment);
+  }
+  
+  public java.lang.String listRateByImage(java.lang.Integer imageId) throws java.rmi.RemoteException{
+    if (travellerPortType == null)
+      _initTravellerPortTypeProxy();
+    return travellerPortType.listRateByImage(imageId);
   }
   
   public java.lang.String searchPlace(java.lang.String place) throws java.rmi.RemoteException{

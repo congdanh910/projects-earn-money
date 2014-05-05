@@ -1,7 +1,9 @@
 package com.dwsj.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -71,11 +73,39 @@ public class GuideController {
 		return "redirect:placeInfo?placeId=" + placeId + "&notify=" + notify +"&redirect=" + 1;
 	}
 	
-	@RequestMapping("/commentOfImage")
-	public String commentOfImage(@RequestParam(value = "imageId", defaultValue = "0") int imageId,
-			Model model) {
-		System.out.println("commentOfImage : " + imageId);
-		return "commentOfImage";
+	@RequestMapping("/myPlace")
+	public String myPlace(HttpServletRequest request, Model model){
+		try {
+			User user = (User) request.getSession().getAttribute("user");
+			String searchResult = guideProxy.searchPlaceByUser(user.getId());
+			JSONArray array = new JSONArray(searchResult);
+			JSONObject status = array.getJSONObject(0);
+			if (status != null && status.getInt("status") == 1) {
+				model.addAttribute("places", ModelUtils.parsePlaces(array));
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return "myPlace";
 	}
 	
+	@RequestMapping("/deleteImage")
+	public void deleteImage(
+			@RequestParam(value = "imageId", defaultValue = "0") int imageId,
+			HttpServletResponse response) {
+		try {
+			if(imageId <= 0){
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				return;
+			}
+			int delete = guideProxy.deleteImageAndInfo(imageId);
+			if(delete <= 0){
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
+		}
+	}
 }
