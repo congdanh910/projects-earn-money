@@ -1,1 +1,1 @@
-<h1>Hello Dwsj</h1>
+<jsp:forward page="dwsj/home"></jsp:forward>
