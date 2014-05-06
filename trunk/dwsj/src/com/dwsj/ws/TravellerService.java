@@ -40,8 +40,10 @@ public class TravellerService {
 			result.key("status").value(Constant.SUCCESS);
 			result.endObject();
 			for (Place pl : places) {
+				User user = DBService.loginById(pl.getUserId());
 				result.object();
 				result.key("id").value(pl.getId());
+				result.key("user_id").value(user != null? user.getId():0);
 				result.key("name").value(pl.getName());
 				result.key("description").value(pl.getDescription());
 				result.endObject();
