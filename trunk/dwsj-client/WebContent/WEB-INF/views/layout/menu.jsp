@@ -13,9 +13,9 @@
       </div>
       <div class="navbar-collapse collapse">
          <ul class="nav navbar-nav">
-           <li class="active"><a href='<c:url value="/${urlPattern}/home"/>'>Home</a></li>
+           <li id="menuHome"><a href='<c:url value="/${urlPattern}/home"/>'>Home</a></li>
            <c:if test="${not empty user}">
-           		<li><a href="<c:url value="/${urlPattern}/myPlace"/>">My Places</a></li>
+           		<li id="menuMyPlaces"><a href="<c:url value="/${urlPattern}/myPlace"/>">My Places</a></li>
            </c:if>
          </ul>
        <c:if test="${login == null or login == false}">

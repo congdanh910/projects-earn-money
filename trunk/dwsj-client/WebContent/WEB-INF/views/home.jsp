@@ -47,5 +47,11 @@
 			jQuery('#searchForm').submit();
 		}
 	</script>
+	<script type="text/javascript">
+		function activeMenu(){
+			jQuery("#menuHome").addClass("active");
+		}
+		window.onload = activeMenu;
+	</script>
 </body>
 </html>
