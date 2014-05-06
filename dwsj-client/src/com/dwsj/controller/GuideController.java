@@ -74,7 +74,9 @@ public class GuideController {
 	}
 	
 	@RequestMapping("/myPlace")
-	public String myPlace(HttpServletRequest request, Model model){
+	public String myPlace(@RequestParam(value="redirect", defaultValue = "0")int redirect,
+			@RequestParam(value="notify", defaultValue = "false")boolean notify,
+			HttpServletRequest request, Model model){
 		try {
 			User user = (User) request.getSession().getAttribute("user");
 			String searchResult = guideProxy.searchPlaceByUser(user.getId());
@@ -83,6 +85,8 @@ public class GuideController {
 			if (status != null && status.getInt("status") == 1) {
 				model.addAttribute("places", ModelUtils.parsePlaces(array));
 			}
+			model.addAttribute("redirect", redirect);
+			model.addAttribute("notify", notify);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -107,5 +111,22 @@ public class GuideController {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
+	}
+	
+	@RequestMapping("/addPlace")
+	public String addPlace(@RequestParam(value="placeName", required=true)String placeName,
+			@RequestParam(value="placeInformation", required=true)String placeInformation,
+			HttpServletRequest request){
+		boolean notify = false;
+		try {
+			User user = (User) request.getSession().getAttribute("user");
+			int addPlace = guideProxy.addPlace(user.getId(), placeName, placeInformation);
+			if(addPlace > 0){
+				notify = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "redirect:myPlace?redirect=1&notify=" + notify;
 	}
 }

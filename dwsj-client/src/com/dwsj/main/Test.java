@@ -16,9 +16,10 @@ public class Test {
 		try {
 //			System.out.println(guideProxy.listImagesByPlace(1));
 //			System.out.println(travellerProxy.listCommentByImage(13));
-			String json = travellerProxy.listRateByImage(13);
-			JSONArray array = new JSONArray(json);
-			System.out.println(Utils.collectRates(ModelUtils.parseRates(array)));
+//			String json = travellerProxy.listRateByImage(13);
+//			JSONArray array = new JSONArray(json);
+//			System.out.println(Utils.collectRates(ModelUtils.parseRates(array)));
+			System.out.println(guideProxy.searchPlaceByUser(1));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -43,6 +43,7 @@ public class ModelUtils {
 				JSONObject object = array.getJSONObject(i);
 				place = new Place();
 				place.setId(object.getInt("id"));
+				place.setUserId(object.getInt("user_id"));
 				place.setName(object.getString("name"));
 				place.setDescription(object.getString("description"));
 				result.add(place);
@@ -85,6 +86,7 @@ public class ModelUtils {
 		try {
 			result = new Place();
 			result.setId(json.getInt("id"));
+			result.setUserId(json.getInt("user_id"));
 			result.setName(json.getString("name"));
 			result.setDescription(json.getString("description"));
 		} catch (JSONException e) {
