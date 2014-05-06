@@ -24,7 +24,7 @@
 				<li class="media">
 					<c:if test="${not empty place}">
 			        <div class="media-body">
-				          <h4 class="media-heading">${place.name}</h4>
+				          <h4 class="media-heading" style="color: blue;">${place.name}</h4>
 				          <p>${place.description}</p>
 				          <div style="background-color: blue; height: 1px"></div>
 				          <c:if test="${not empty images }">
@@ -39,7 +39,7 @@
 						              <div style="float: right;padding-top: 10px;padding-right: 16px;">
 						              	<a href="#" onclick="showDialog(${image.id});">${image.countComment} Comments</a> ||
 						              	<a href="#" onclick="showRateDialog(${image.id});">${image.countRate} Rates</a>
-						              	<c:if test="${not empty user and user.id == image.userId}">||
+						              	<c:if test="${not empty user and (user.id == image.userId or user.id == place.userId)}">||
 						              		<a href="#" onclick="deleteImage(${image.id});">Delete</a>
 						              	</c:if>
 						              </div>
@@ -55,7 +55,7 @@
 							        <div style="clear: both; margin-top: 10px;"></div>
 							        <input type="file" name="placeImage" accept="image/gif, image/jpeg, image/png" required="required"/>
 							        <div style="clear: both; margin-top: 10px;"></div>
-							        <input type="submit" class="btn btn-default" value="Upload" <c:if test="${empty user}">readonly="readonly"</c:if> />
+							        <input type="submit" class="btn btn-default" value="Upload" <c:if test="${empty user}">disabled="disabled"</c:if> />
 							    </form>
 				          </div>
 			         </div>
@@ -159,6 +159,11 @@
    
    <script type="text/javascript">
    		function commentAction(){
+   			var comment = jQuery("#commentData").val();
+   			if(comment == null || comment == ""){
+   				alert("Please input your comment!!!");
+   				return;
+   			}
    			jQuery.ajax({
    			        url : '<c:url value="/${urlPattern}/commentOnImage"/>',
    			        type: 'GET',
@@ -241,6 +246,12 @@
 				});
 			}
 		}
+	</script>
+	<script type="text/javascript">
+		function activeMenu(){
+			jQuery("#menuHome").addClass("active");
+		}
+		window.onload = activeMenu;
 	</script>
 </body>
 </html>
