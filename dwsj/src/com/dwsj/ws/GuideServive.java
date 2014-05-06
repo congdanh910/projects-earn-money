@@ -147,6 +147,7 @@ public class GuideServive {
 				result.endArray();
 				return result.toString();
 			}
+			User user = DBService.loginById(place.getUserId());
 			result.array();
 			result.object();
 			result.key("status").value(Constant.SUCCESS);
@@ -154,6 +155,7 @@ public class GuideServive {
 			result.object();
 			result.key("id").value(place.getId());
 			result.key("name").value(place.getName());
+			result.key("user_id").value(user != null? user.getId():0);
 			result.key("description").value(place.getDescription());
 			result.endObject();
 			result.endArray();
@@ -195,9 +197,11 @@ public class GuideServive {
 			result.key("status").value(Constant.SUCCESS);
 			result.endObject();
 			for (Place pl : places) {
+				User user = DBService.loginById(pl.getUserId());
 				result.object();
 				result.key("id").value(pl.getId());
 				result.key("name").value(pl.getName());
+				result.key("user_id").value(user != null?user.getId():0);
 				result.key("description").value(pl.getDescription());
 				result.endObject();
 			}
