@@ -222,6 +222,47 @@ public class GuideServive {
 		return result.toString();
 	}
 	
+	
+	/*
+	 * 1 	: request success 
+	 * 0 	: request fail 
+	 * -3	: parameter is not good
+	 * -1	: exception
+	 */
+	public String allPlace() {
+		JSONStringer result = new JSONStringer();
+		try {
+			result.array();
+			List<Place> places = DBService.findAllPlace();
+			result.object();
+			result.key("status").value(Constant.SUCCESS);
+			result.endObject();
+			for (Place pl : places) {
+				User user = DBService.loginById(pl.getUserId());
+				result.object();
+				result.key("id").value(pl.getId());
+				result.key("name").value(pl.getName());
+				result.key("user_id").value(user != null?user.getId():0);
+				result.key("description").value(pl.getDescription());
+				result.endObject();
+			}
+			result.endArray();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			try {
+				result.array();
+				result.object();
+				result.key("status").value(Constant.EXCEPTION);
+				result.endObject();
+				result.endArray();
+				return result.toString();
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+			}
+		}
+		return result.toString();
+	}
+	
 	/*
 	 * Result is id of this image
 	 * >0 	: request success 
