@@ -35,6 +35,7 @@ public class DBService {
 				user.setUsername(re.getString("username"));
 				user.setPassword(re.getString("password"));
 				user.setFullName(re.getString("full_name"));
+				user.setGuide(re.getInt("guide"));
 				user.setCreateDate(re.getTimestamp("create_date"));
 			}
 		} catch (Exception e) {
@@ -68,6 +69,7 @@ public class DBService {
 				user.setUsername(re.getString("username"));
 				user.setPassword(re.getString("password"));
 				user.setFullName(re.getString("full_name"));
+				user.setGuide(re.getInt("guide"));
 				user.setCreateDate(re.getTimestamp("create_date"));
 			}
 		} catch (Exception e) {
@@ -112,17 +114,18 @@ public class DBService {
 	}
 	
 	
-	public static boolean insertUser(String username, String password, String fullName) {
+	public static boolean insertUser(String username, String password, String fullName, int guide) {
 		Connection connection = null;
 		PreparedStatement sta = null;
 		ConnectMysql mysql = ConnectMysql.getInstance();
 		try {
 			connection = mysql.getConnection();
-			sta = connection.prepareStatement("INSERT INTO DWSJ_USERS(username,password,full_name,create_date) VALUES (?,?,?,?)");
+			sta = connection.prepareStatement("INSERT INTO DWSJ_USERS(username,password,full_name, guide,create_date) VALUES (?,?,?,?,?)");
 			sta.setString(1, username);
 			sta.setString(2, password);
 			sta.setString(3, fullName);
-			sta.setTimestamp(4, Utils.createTimestamp());
+			sta.setInt(4, guide);
+			sta.setTimestamp(5, Utils.createTimestamp());
 			int insert = sta.executeUpdate();
 			if(insert > 0) return true;
 		} catch (Exception e) {
