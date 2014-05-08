@@ -3,7 +3,6 @@ package com.dwsj.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -23,7 +22,17 @@ public class GuideController {
 	private GuidePortTypeProxy guideProxy = new GuidePortTypeProxy();
 
 	@RequestMapping("/home")
-	public String home() {
+	public String home(Model model) {
+		try {
+			String searchResult = guideProxy.allPlace();
+			JSONArray array = new JSONArray(searchResult);
+			JSONObject status = array.getJSONObject(0);
+			if (status != null && status.getInt("status") == 1) {
+				model.addAttribute("places", ModelUtils.parsePlaces(array));
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 		return "home";
 	}
 
