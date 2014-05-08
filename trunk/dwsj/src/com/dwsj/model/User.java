@@ -2,7 +2,6 @@ package com.dwsj.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Date;
 
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -10,17 +9,19 @@ public class User implements Serializable {
 	private String username;
 	private String password;
 	private String fullName;
+	private int guide;
 	private Timestamp createDate;
 
 	public User() {
 	}
 
 	public User(int id, String username, String password, String fullName,
-			Timestamp createDate) {
+			int guide, Timestamp createDate) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.fullName = fullName;
+		this.guide = guide;
 		this.createDate = createDate;
 	}
 
@@ -54,6 +55,14 @@ public class User implements Serializable {
 
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
+	}
+
+	public int getGuide() {
+		return guide;
+	}
+
+	public void setGuide(int guide) {
+		this.guide = guide;
 	}
 
 	public Timestamp getCreateDate() {

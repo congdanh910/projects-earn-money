@@ -44,6 +44,7 @@ public class GuideServive {
 				result.key("username").value(user.getUsername());
 				result.key("password").value(user.getPassword());
 				result.key("full_name").value(user.getFullName());
+				result.key("guide").value(user.getGuide());
 				result.endObject();
 				result.endArray();
 			} else {
@@ -75,7 +76,7 @@ public class GuideServive {
 	 * -3	: parameter is not good
 	 * -1 	: exception
 	 */
-	public int register(String username, String password, String fullName) {
+	public int register(String username, String password, String fullName, int guide) {
 		if(StringUtils.isBlank(username) || StringUtils.isBlank(password) || StringUtils.isBlank(fullName)){
 			return Constant.PARAMETER_FAIL;
 		}
@@ -83,7 +84,7 @@ public class GuideServive {
 			if(DBService.checkUser(username)){
 				return Constant.USER_EXISTED;
 			} else {
-				if(DBService.insertUser(username, password, fullName)){
+				if(DBService.insertUser(username, password, fullName, guide)){
 					return Constant.SUCCESS;
 				}
 			}
