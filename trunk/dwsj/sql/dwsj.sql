@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : local
+Source Server         : localhost
 Source Server Version : 50537
 Source Host           : localhost:3306
 Source Database       : dwsj
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50537
 File Encoding         : 65001
 
-Date: 2014-05-06 01:19:20
+Date: 2014-05-08 17:48:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -113,6 +113,7 @@ CREATE TABLE `dwsj_users` (
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `full_name` varchar(255) DEFAULT NULL,
+  `guide` int(11) DEFAULT '0',
   `create_date` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
