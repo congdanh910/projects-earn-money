@@ -48,16 +48,18 @@
 					         </c:forEach>
 				          </c:if>
 				          <div style="clear: both; margin-top: 10px;"></div>
-				          <div class="media" style="margin-left: 25px;">
-					          	<form action="<c:url value="/${urlPattern}/addImage"/>" enctype="multipart/form-data" method="post">
-					          		<input type="hidden" name="placeId" value="${place.id}" />
-							        <textarea required="required" <c:if test="${empty user}">readonly="readonly" placeholder="Please login to add information" </c:if> placeholder="Information here ....." class="form-control" rows="5" name="information"></textarea>
-							        <div style="clear: both; margin-top: 10px;"></div>
-							        <input type="file" name="placeImage" accept="image/gif, image/jpeg, image/png" required="required"/>
-							        <div style="clear: both; margin-top: 10px;"></div>
-							        <input type="submit" class="btn btn-default" value="Upload" <c:if test="${empty user}">disabled="disabled"</c:if> />
-							    </form>
-				          </div>
+				          <c:if test="${not empty user and user.id == place.userId}">
+					          <div class="media" style="margin-left: 25px;">
+						          	<form action="<c:url value="/${urlPattern}/addImage"/>" enctype="multipart/form-data" method="post">
+						          		<input type="hidden" name="placeId" value="${place.id}" />
+								        <textarea required="required" <c:if test="${empty user}">readonly="readonly" placeholder="Please login to add information" </c:if> placeholder="Information here ....." class="form-control" rows="5" name="information"></textarea>
+								        <div style="clear: both; margin-top: 10px;"></div>
+								        <input type="file" name="placeImage" accept="image/gif, image/jpeg, image/png" required="required"/>
+								        <div style="clear: both; margin-top: 10px;"></div>
+								        <input type="submit" class="btn btn-default" value="Upload" <c:if test="${empty user}">disabled="disabled"</c:if> />
+								    </form>
+					          </div>
+				          </c:if>
 			         </div>
 			       </c:if>
 			       <c:if test="${empty place}">
