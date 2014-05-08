@@ -33,6 +33,10 @@
 			    <label for="fullName">Full Name</label>
 			    <input type="text" required="required" class="form-control" id="fullName" name="fullName" placeholder="Enter your name">
 			  </div>
+			  <div class="form-group">
+			  	<input type="checkbox" id="guide" name="guide" value="1"/>
+			    <label for="fullName">Are you guide?</label>
+			  </div>
 			  <button type="submit" class="btn btn-default">Register</button>
 			</form>
 		</div>

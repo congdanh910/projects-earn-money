@@ -25,6 +25,7 @@ public class ModelUtils {
 			result.setUsername(json.getString("username"));
 			result.setPassword(json.getString("password"));
 			result.setFullName(json.getString("full_name"));
+			result.setGuide(json.getInt("guide"));
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return null;

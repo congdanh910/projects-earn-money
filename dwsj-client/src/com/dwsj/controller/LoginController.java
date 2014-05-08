@@ -57,13 +57,14 @@ public class LoginController {
 	public String registerAction(@RequestParam(value="username", required=true)String username,
 			@RequestParam(value="password", required=true)String password,
 			@RequestParam(value="fullName", required=true)String fullName,
+			@RequestParam(value="guide", required=true, defaultValue="0")int guide,
 			Model model, HttpServletRequest request) {
 		if (StringUtils.isBlank(username) || StringUtils.isBlank(password)
 				|| StringUtils.isBlank(fullName)) {
 			model.addAttribute("error", true);
 		}
 		try {
-			int id = guideProxy.register(username, password, fullName);
+			int id = guideProxy.register(username, password, fullName, guide);
 			if (id > 0) {
 				String login = guideProxy.login(username, password);
 				JSONArray array = new JSONArray(login);
