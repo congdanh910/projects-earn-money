@@ -98,12 +98,6 @@ public class GuidePortTypeProxy implements com.dwsj.ws.GuidePortType {
     return guidePortType.addImageAndInfo(userId, placeId, image, type, information);
   }
   
-  public java.lang.Integer register(java.lang.String username, java.lang.String password, java.lang.String fullName) throws java.rmi.RemoteException{
-    if (guidePortType == null)
-      _initGuidePortTypeProxy();
-    return guidePortType.register(username, password, fullName);
-  }
-  
   public java.lang.String allPlace() throws java.rmi.RemoteException{
     if (guidePortType == null)
       _initGuidePortTypeProxy();
@@ -120,6 +114,12 @@ public class GuidePortTypeProxy implements com.dwsj.ws.GuidePortType {
     if (guidePortType == null)
       _initGuidePortTypeProxy();
     return guidePortType.addInformation(userId, placeId, information);
+  }
+  
+  public java.lang.Integer register(java.lang.String username, java.lang.String password, java.lang.String fullName, java.lang.Integer guide) throws java.rmi.RemoteException{
+    if (guidePortType == null)
+      _initGuidePortTypeProxy();
+    return guidePortType.register(username, password, fullName, guide);
   }
   
   
