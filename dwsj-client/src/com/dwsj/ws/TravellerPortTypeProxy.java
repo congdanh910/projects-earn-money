@@ -80,6 +80,12 @@ public class TravellerPortTypeProxy implements com.dwsj.ws.TravellerPortType {
     return travellerPortType.rateOnImage(userId, imageId, rate);
   }
   
+  public java.lang.Integer checkRate(java.lang.Integer userId, java.lang.Integer imageId) throws java.rmi.RemoteException{
+    if (travellerPortType == null)
+      _initTravellerPortTypeProxy();
+    return travellerPortType.checkRate(userId, imageId);
+  }
+  
   public java.lang.Integer commentOnInformation(java.lang.Integer userId, java.lang.Integer infoId, java.lang.String comment) throws java.rmi.RemoteException{
     if (travellerPortType == null)
       _initTravellerPortTypeProxy();

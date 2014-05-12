@@ -29,12 +29,15 @@
 				<c:if test="${not empty places}">
 					<c:forEach var="place" items="${places}">
 						<li class="media">
-						    <div class="media">
-						      	<div class="media-body div-radius">
-						        	<h4 class="media-heading"><a href='<c:url value="/${urlPattern}/placeInfo"/>?placeId=${place.id}'>${place.name}</a></h4>
-						        	${place.description}
-						      	</div>
-				   			</div>
+							<div class="media div-radius" style="margin-left: 25px;">
+					            <a class="pull-left" href="#">
+					              <img class="media-object" src="${place.placeImage}" style="width: 80px; height: 80px;">
+					            </a>
+					            <div class="media-body">
+					              <h4 class="media-heading"><a href='<c:url value="/${urlPattern}/placeInfo"/>?placeId=${place.id}'>${place.name}</a></h4>
+							        ${place.description}
+					            </div>
+				            </div>
 				 		</li>					
 					</c:forEach>
 				</c:if> 

@@ -47,6 +47,7 @@ public class ModelUtils {
 				place.setUserId(object.getInt("user_id"));
 				place.setName(object.getString("name"));
 				place.setDescription(object.getString("description"));
+				place.setPlaceImage(object.getString("place_image"));
 				result.add(place);
 			}
 		} catch (Exception e) {
@@ -90,6 +91,7 @@ public class ModelUtils {
 			result.setUserId(json.getInt("user_id"));
 			result.setName(json.getString("name"));
 			result.setDescription(json.getString("description"));
+			result.setPlaceImage(json.getString("place_image"));
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return null;

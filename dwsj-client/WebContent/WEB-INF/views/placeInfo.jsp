@@ -117,7 +117,7 @@
 			            </select>
 			        </div>
 			        <div style="clear: both; margin-top: 10px;"></div>
-			        <input type="button" class="btn btn-default" value="Rate" 
+			        <input type="button" class="btn btn-default" value="Rate" id="rateButton"
 			        	<c:if test="${empty user}">disabled="disabled"</c:if> onclick="rateAction();"/>
 			    </form>
 	        </div>
@@ -225,7 +225,12 @@
 	   		   			    	}
 	   		   			    });
    			     		} else {
-   			     			alert("Comment fail! Please contact with Administrator!");
+   			     			if(parseJson.status == "0"){
+   			     				alert("Comment fail! Please contact with Administrator!");
+   			     			} else {
+   			     				alert("You have rated on this image. Thanks!");
+   			     				jQuery('#rateButton').prop('disabled', true);
+   			     			}
    			     		}
    			    	}
    			    });

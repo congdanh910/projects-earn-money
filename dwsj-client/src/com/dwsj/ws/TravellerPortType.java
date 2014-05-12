@@ -10,6 +10,7 @@ package com.dwsj.ws;
 public interface TravellerPortType extends java.rmi.Remote {
     public java.lang.Integer rateOnInformation(java.lang.Integer userId, java.lang.Integer infoId, java.lang.Integer rate) throws java.rmi.RemoteException;
     public java.lang.String listCommentByImage(java.lang.Integer imageId) throws java.rmi.RemoteException;
+    public java.lang.Integer checkRate(java.lang.Integer userId, java.lang.Integer imageId) throws java.rmi.RemoteException;
     public java.lang.Integer commentOnImage(java.lang.Integer userId, java.lang.Integer imageId, java.lang.String comment) throws java.rmi.RemoteException;
     public java.lang.String listRateByImage(java.lang.Integer imageId) throws java.rmi.RemoteException;
     public java.lang.String searchPlace(java.lang.String place) throws java.rmi.RemoteException;
