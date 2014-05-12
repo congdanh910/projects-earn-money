@@ -13,7 +13,7 @@ public interface GuidePortType extends java.rmi.Remote {
     public java.lang.String listImagesByPlace(java.lang.Integer placeId) throws java.rmi.RemoteException;
     public java.lang.Integer updateInformation(java.lang.Integer infoId, java.lang.String information) throws java.rmi.RemoteException;
     public java.lang.String placeInfo(java.lang.Integer placeId) throws java.rmi.RemoteException;
-    public java.lang.Integer addPlace(java.lang.Integer userId, java.lang.String place, java.lang.String description) throws java.rmi.RemoteException;
+    public java.lang.Integer addPlace(java.lang.Integer userId, java.lang.String place, java.lang.String description, byte[] placeImage, java.lang.String type) throws java.rmi.RemoteException;
     public java.lang.String searchPlaceByUser(java.lang.Integer userId) throws java.rmi.RemoteException;
     public java.lang.String login(java.lang.String username, java.lang.String password) throws java.rmi.RemoteException;
     public java.lang.Integer addImageAndInfo(java.lang.Integer userId, java.lang.Integer placeId, byte[] image, java.lang.String type, java.lang.String information) throws java.rmi.RemoteException;

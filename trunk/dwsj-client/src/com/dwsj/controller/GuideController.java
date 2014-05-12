@@ -123,13 +123,20 @@ public class GuideController {
 	}
 	
 	@RequestMapping("/addPlace")
-	public String addPlace(@RequestParam(value="placeName", required=true)String placeName,
+	public String addPlace(@RequestParam(value = "placeImage", required = true) MultipartFile placeImage,
+			@RequestParam(value="placeName", required=true)String placeName,
 			@RequestParam(value="placeInformation", required=true)String placeInformation,
 			HttpServletRequest request){
 		boolean notify = false;
 		try {
+			byte[] bs = null;
+			String fileName = "";
+			if(!placeImage.isEmpty()){
+				fileName = Utils.getTypeOfImage(placeImage.getOriginalFilename());
+				bs = placeImage.getBytes();
+			}
 			User user = (User) request.getSession().getAttribute("user");
-			int addPlace = guideProxy.addPlace(user.getId(), placeName, placeInformation);
+			int addPlace = guideProxy.addPlace(user.getId(), placeName, placeInformation, bs, fileName);
 			if(addPlace > 0){
 				notify = true;
 			}

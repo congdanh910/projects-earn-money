@@ -119,6 +119,13 @@ public class TravellerController {
 				return;
 			}
 			User user = (User) request.getSession().getAttribute("user");
+			
+			int checkRate = travellerProxy.checkRate(user.getId(), rateImageId);
+			if(checkRate > 0){
+				stringer.object().key("status").value(-1).endObject();
+				response.getWriter().write(stringer.toString());
+				return;
+			}			
 			int rate = travellerProxy.rateOnImage(user.getId(), rateImageId, rating);
 			if(rate > 0){
 				stringer.object().key("status").value(1).key("imageId").value(rateImageId).endObject();

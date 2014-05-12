@@ -101,6 +101,14 @@ public class GuideSoap11BindingStub extends org.apache.axis.client.Stub implemen
         param.setOmittable(true);
         param.setNillable(true);
         oper.addParameter(param);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://ws.dwsj.com", "placeImage"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "base64Binary"), byte[].class, false, false);
+        param.setOmittable(true);
+        param.setNillable(true);
+        oper.addParameter(param);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://ws.dwsj.com", "type"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
+        param.setOmittable(true);
+        param.setNillable(true);
+        oper.addParameter(param);
         oper.setReturnType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
         oper.setReturnClass(java.lang.Integer.class);
         oper.setReturnQName(new javax.xml.namespace.QName("http://ws.dwsj.com", "return"));
@@ -460,7 +468,7 @@ public class GuideSoap11BindingStub extends org.apache.axis.client.Stub implemen
 }
     }
 
-    public java.lang.Integer addPlace(java.lang.Integer userId, java.lang.String place, java.lang.String description) throws java.rmi.RemoteException {
+    public java.lang.Integer addPlace(java.lang.Integer userId, java.lang.String place, java.lang.String description, byte[] placeImage, java.lang.String type) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -476,7 +484,7 @@ public class GuideSoap11BindingStub extends org.apache.axis.client.Stub implemen
 
         setRequestHeaders(_call);
         setAttachments(_call);
- try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {userId, place, description});
+ try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {userId, place, description, placeImage, type});
 
         if (_resp instanceof java.rmi.RemoteException) {
             throw (java.rmi.RemoteException)_resp;
