@@ -8,19 +8,21 @@ public class Place implements Serializable {
 	private int id;
 	private int userId;
 	private String name;
+	private String placeImage;
 	private String description;
 	private Timestamp createDate;
 
-	public Place(int id, int userId, String name, String description,
-			Timestamp createDate) {
+	public Place() {
+	}
+
+	public Place(int id, int userId, String name, String placeImage,
+			String description, Timestamp createDate) {
 		this.id = id;
 		this.userId = userId;
 		this.name = name;
+		this.placeImage = placeImage;
 		this.description = description;
 		this.createDate = createDate;
-	}
-
-	public Place() {
 	}
 
 	public int getId() {
@@ -45,6 +47,14 @@ public class Place implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getPlaceImage() {
+		return placeImage;
+	}
+
+	public void setPlaceImage(String placeImage) {
+		this.placeImage = placeImage;
 	}
 
 	public String getDescription() {
