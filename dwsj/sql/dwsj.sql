@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50537
 File Encoding         : 65001
 
-Date: 2014-05-08 17:48:04
+Date: 2014-05-12 11:10:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -77,6 +77,7 @@ CREATE TABLE `dwsj_places` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `dwsj_user` int(11) NOT NULL,
   `place_name` varchar(255) NOT NULL,
+  `place_image` varchar(255) DEFAULT NULL,
   `place_description` varchar(1000) DEFAULT NULL,
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
