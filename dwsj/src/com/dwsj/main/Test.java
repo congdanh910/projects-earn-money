@@ -64,5 +64,7 @@ public class Test {
 //		System.out.println(DBService.findRateByImage(13));
 //		System.out.println(DBService.countCommentByImage(26));
 //		System.out.println(DBService.countRateByImage(13));
+		
+		System.out.println(DBService.checkRated(1, 1));
 	}
 }

@@ -142,17 +142,18 @@ public class DBService {
 		return false;
 	}
 	
-	public static boolean insertPlace(int userId, String place, String description) {
+	public static boolean insertPlace(int userId, String place, String description, String placeImage) {
 		Connection connection = null;
 		PreparedStatement sta = null;
 		ConnectMysql mysql = ConnectMysql.getInstance();
 		try {
 			connection = mysql.getConnection();
-			sta = connection.prepareStatement("INSERT INTO DWSJ_PLACES(dwsj_user,place_name,place_description,create_date) VALUES (?,?,?,?)");
+			sta = connection.prepareStatement("INSERT INTO DWSJ_PLACES(dwsj_user,place_name,place_description,place_image,create_date) VALUES (?,?,?,?,?)");
 			sta.setInt(1, userId);
 			sta.setString(2, place);
 			sta.setString(3, description);
-			sta.setTimestamp(4, Utils.createTimestamp());
+			sta.setString(4, placeImage);
+			sta.setTimestamp(5, Utils.createTimestamp());
 			int insert = sta.executeUpdate();
 			if(insert > 0) return true;
 		} catch (Exception e) {
@@ -185,6 +186,7 @@ public class DBService {
 				place.setUserId(re.getInt("dwsj_user"));
 				place.setName(re.getString("place_name"));
 				place.setDescription(re.getString("place_description"));
+				place.setPlaceImage(re.getString("place_image"));
 				place.setCreateDate(re.getTimestamp("create_date"));
 			}
 		} catch (Exception e) {
@@ -467,6 +469,7 @@ public class DBService {
 				plac.setUserId(re.getInt("dwsj_user"));
 				plac.setName(re.getString("place_name"));
 				plac.setDescription(re.getString("place_description"));
+				plac.setPlaceImage(re.getString("place_image"));
 				plac.setCreateDate(re.getTimestamp("create_date"));
 				result.add(plac);
 			}
@@ -499,6 +502,7 @@ public class DBService {
 				plac.setUserId(re.getInt("dwsj_user"));
 				plac.setName(re.getString("place_name"));
 				plac.setDescription(re.getString("place_description"));
+				plac.setPlaceImage(re.getString("place_image"));
 				plac.setCreateDate(re.getTimestamp("create_date"));
 			}
 		} catch (Exception e) {
@@ -531,6 +535,7 @@ public class DBService {
 				plac.setUserId(re.getInt("dwsj_user"));
 				plac.setName(re.getString("place_name"));
 				plac.setDescription(re.getString("place_description"));
+				plac.setPlaceImage(re.getString("place_image"));
 				plac.setCreateDate(re.getTimestamp("create_date"));
 				result.add(plac);
 			}
@@ -563,6 +568,7 @@ public class DBService {
 				plac.setUserId(re.getInt("dwsj_user"));
 				plac.setName(re.getString("place_name"));
 				plac.setDescription(re.getString("place_description"));
+				plac.setPlaceImage(re.getString("place_image"));
 				plac.setCreateDate(re.getTimestamp("create_date"));
 				result.add(plac);
 			}
@@ -819,6 +825,34 @@ public class DBService {
 				}
 		}
 		return 0;
+	}
+	
+	public static boolean checkRated(int userId, int imageId) {
+		Connection connection = null;
+		PreparedStatement sta = null;
+		ConnectMysql mysql = ConnectMysql.getInstance();
+		try {
+			connection = mysql.getConnection();
+			sta = connection.prepareStatement("SELECT COUNT(*) AS COUNT_RATE FROM DWSJ_RATES WHERE dwsj_user=? AND dwsj_image=?");
+			sta.setInt(1, userId);
+			sta.setInt(2, imageId);
+			ResultSet re = sta.executeQuery();
+			while (re.next()) {
+				if(re.getInt("COUNT_RATE") > 0){
+					return true;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+				try {
+					if(sta != null) sta.close();
+					if(connection != null) connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+		return false;
 	}
 	
 }

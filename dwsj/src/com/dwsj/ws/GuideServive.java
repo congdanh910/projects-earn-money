@@ -102,7 +102,7 @@ public class GuideServive {
 	 * -4	: user does not exist
 	 * -1 	: exception
 	 */
-	public int addPlace(int userId, String place, String description) {
+	public int addPlace(int userId, String place, String description, byte[] placeImage, String type) {
 		try {
 			if (userId <= 0 || StringUtils.isBlank(place)) {
 				return Constant.PARAMETER_FAIL;
@@ -111,7 +111,11 @@ public class GuideServive {
 			if (user == null) {
 				return Constant.USER_NOT_FOUND;
 			}
-			boolean insert = DBService.insertPlace(userId, place, description);
+			String upload = Utils.uploadImage(placeImage, type, Utils.getHttpRequest());
+			if (StringUtils.isBlank(upload)) {
+				return Constant.FAIL;
+			}
+			boolean insert = DBService.insertPlace(userId, place, description, upload);
 			if (insert)
 				return Constant.SUCCESS;
 		} catch (Exception e) {
@@ -158,6 +162,7 @@ public class GuideServive {
 			result.key("name").value(place.getName());
 			result.key("user_id").value(user != null? user.getId():0);
 			result.key("description").value(place.getDescription());
+			result.key("place_image").value(Utils.getImageUrl(Utils.getHttpRequest()) + place.getPlaceImage());
 			result.endObject();
 			result.endArray();
 			return result.toString();
@@ -204,6 +209,7 @@ public class GuideServive {
 				result.key("name").value(pl.getName());
 				result.key("user_id").value(user != null?user.getId():0);
 				result.key("description").value(pl.getDescription());
+				result.key("place_image").value(Utils.getImageUrl(Utils.getHttpRequest()) + pl.getPlaceImage());
 				result.endObject();
 			}
 			result.endArray();
@@ -245,6 +251,7 @@ public class GuideServive {
 				result.key("name").value(pl.getName());
 				result.key("user_id").value(user != null?user.getId():0);
 				result.key("description").value(pl.getDescription());
+				result.key("place_image").value(Utils.getImageUrl(Utils.getHttpRequest()) + pl.getPlaceImage());
 				result.endObject();
 			}
 			result.endArray();

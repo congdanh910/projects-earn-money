@@ -46,6 +46,7 @@ public class TravellerService {
 				result.key("user_id").value(user != null? user.getId():0);
 				result.key("name").value(pl.getName());
 				result.key("description").value(pl.getDescription());
+				result.key("place_image").value(Utils.getImageUrl(Utils.getHttpRequest()) + pl.getPlaceImage());
 				result.endObject();
 			}
 			result.endArray();
@@ -303,5 +304,26 @@ public class TravellerService {
 			}
 		}
 		return result.toString();
+	}
+	
+	/*
+	 * 1 	: request success 
+	 * 0 	: request fail 
+	 * -3	: parameter is not good
+	 * -1	: exception
+	 */
+	public int checkRate(int userId, int imageId){
+		try {
+			if(userId <= 0 || imageId <= 0)
+				return Constant.PARAMETER_FAIL;
+			boolean checkRate = DBService.checkRated(userId, imageId);
+			if(checkRate){
+				return Constant.SUCCESS;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Constant.EXCEPTION;
+		}
+		return Constant.FAIL;
 	}
 }
